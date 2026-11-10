@@ -52,7 +52,7 @@ def compute_eigen_2x2(matrix):
     eigenvector2 = find_vector(lambda2)
     return [lambda1, lambda2], [eigenvector1, eigenvector2]
 
-A = [,
+A = [
     [2, 3]
 ]
 
