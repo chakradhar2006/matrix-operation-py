@@ -1,0 +1,25 @@
+import numpy as np
+
+r1 = int(input("Enter no. of rows for mat1: "))
+c1 = int(input("Enter no. of cols for mat1 (and rows for mat2): "))
+c2 = int(input("Enter no. of cols for mat2: "))
+
+print(f"Enter {r1 * c1} elements for mat1: ")
+elements1 = input().split()
+matrix1 = np.array([int(x) for x in elements1]).reshape(r1, c1)
+
+print(f"Enter {c1 * c2} elements for mat2: ")
+elements2 = input().split()
+matrix2 = np.array([int(x) for x in elements2]).reshape(c1, c2)
+
+result = np.zeros((r1, c2), dtype=int)
+
+for i in range(r1):
+    for j in range(c2):
+        t = 0
+        for k in range(c1):
+            t += matrix1[i][k] * matrix2[k][j]
+        result[i][j] = t
+
+print("\nResultant Matrix:")
+print(result)
