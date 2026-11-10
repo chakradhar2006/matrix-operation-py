@@ -1,0 +1,74 @@
+
+
+
+import math
+
+def multiply_matrices(A, B):
+    result = []
+    for i in range(len(A)):
+        row = []
+        for j in range(len(B[0])):
+            sum = 0
+            for k in range(len(B)):
+                sum += A[i][k] * B[k][j]
+            row.append(sum)
+        result.append(row)
+    return result
+
+def inverse_2x2(matrix):
+    det = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+    if det == 0:
+        print("Matrix is singular and cannot be inverted")
+        return None
+    return [
+        [matrix[1][1] / det, -matrix[0][1] / det],
+        [-matrix[1][0] / det, matrix[0][0] / det]
+    ]
+
+def compute_eigen_2x2(matrix):
+    a, b, c, d = matrix[0][0], matrix[0][1], matrix[1][0], matrix[1][1]
+    # Characteristic Equation: λ² - (a+d)λ + (ad - bc) = 0
+    trace = a + d
+    determinant = a * d - b * c
+    discriminant = trace**2 - 4 * determinant
+    
+    if discriminant < 0:
+        print("Complex eigenvalues, not supported here.")
+        return None, None
+        
+    sqrt_disc = math.sqrt(discriminant)
+    lambda1 = (trace + sqrt_disc) / 2
+    lambda2 = (trace - sqrt_disc) / 2
+
+    # Find eigenvectors manually (one for each eigenvalue)
+    def find_vector(lam):
+        # (A - λI)v = 0
+        # Solve: (a - λ)v1 + bv2 = 0
+        # Choose v2 = 1
+        v1 = -(b) / (a - lam) if a - lam != 0 else 1
+        return [v1, 1]
+
+    eigenvector1 = find_vector(lambda1)
+    eigenvector2 = find_vector(lambda2)
+    return [lambda1, lambda2], [eigenvector1, eigenvector2]
+
+A = [,
+    [2, 3]
+]
+
+eigenvalues, eigenvectors = compute_eigen_2x2(A)
+print("Eigenvalues:", eigenvalues)
+print("Eigenvectors:", eigenvectors)
+
+P = [
+    [eigenvectors[0][0], eigenvectors[1][0]],
+    [eigenvectors[0][1], eigenvectors[1][1]]
+]
+print("Matrix P:", P)
+print(inverse_2x2(P))
+
+D = multiply_matrices(
+    inverse_2x2(P),
+    multiply_matrices(A, P)
+)
+print(D)
